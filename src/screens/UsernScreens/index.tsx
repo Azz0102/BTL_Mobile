@@ -3,6 +3,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // import HomeScreen from './HomeScreen';
 import Empty from '../Empty';
 import Header from '../../components/Header';
+import UserProfile from '../UserProfile';
+
 // import FoodDetailsScreen from './FoodDetailsScreen';
 
 const UsernScreens = () => {
@@ -13,7 +15,7 @@ const UsernScreens = () => {
         <Stack.Screen
           options={{headerShown: false}}
           name="HomeScreen"
-          component={Empty}
+          component={UserProfile}
         />
         <Stack.Screen
           options={{
