@@ -1,4 +1,7 @@
+import 'react-native-gesture-handler';
+
 import { NavigationContainer } from '@react-navigation/native';
+
 import { Modal, View, Text, Pressable } from 'react-native';
 import MasterNav from './src/nav/MasterNav';
 import { StatusBar } from 'expo-status-bar';
