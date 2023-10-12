@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
         color: 'orange',
     },
     defaultBackgroundColor: {
-        backgroundColor: 'rgb(255 237 213)'
+        backgroundColor: 'rgb(255 237 213)',
     },
     UserProfileHeader: {
         display: 'flex',
