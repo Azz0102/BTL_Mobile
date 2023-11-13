@@ -20,42 +20,47 @@ const HomeScreen = ({ navigation }) => {
             id: 1,
             foodName: 'Poha',
             available: true,
-            foodImageUrl: 'https://res.cloudinary.com/dfsucyg30/image/upload/v1690964445/nxuiyqocgn0av3w7uszi.png',
+            foodImageUrl:
+                'https://res.cloudinary.com/dfsucyg30/image/upload/v1690964445/nxuiyqocgn0av3w7uszi.png',
             foodPrice: '25$',
             time: '2s',
         },
-		{
+        {
             id: 2,
             foodName: 'Samosa',
             available: true,
-            foodImageUrl: 'https://res.cloudinary.com/dfsucyg30/image/upload/v1690964504/vanzrpqb0nwrmtxa9mau.png',
+            foodImageUrl:
+                'https://res.cloudinary.com/dfsucyg30/image/upload/v1690964504/vanzrpqb0nwrmtxa9mau.png',
             foodPrice: '50$',
             time: '5s',
         },
-		{
+        {
             id: 3,
             foodName: 'Egg Rice',
             available: true,
-            foodImageUrl: 'https://res.cloudinary.com/dfsucyg30/image/upload/v1690968955/dfk4fhclsuf9clv9hpkv.png',
+            foodImageUrl:
+                'https://res.cloudinary.com/dfsucyg30/image/upload/v1690968955/dfk4fhclsuf9clv9hpkv.png',
             foodPrice: '15$',
             time: '5s',
         },
-		{
+        {
             id: 4,
             foodName: 'Hamburger',
             available: true,
-            foodImageUrl: 'https://res.cloudinary.com/dfsucyg30/image/upload/v1690968994/hwq1jyyg0omlilmgppip.png',
+            foodImageUrl:
+                'https://res.cloudinary.com/dfsucyg30/image/upload/v1690968994/hwq1jyyg0omlilmgppip.png',
             foodPrice: '30$',
             time: '5s',
         },
-		{
+        {
             id: 5,
             foodName: 'Pizza',
             available: true,
-            foodImageUrl: 'https://res.cloudinary.com/dfsucyg30/image/upload/v1690969066/yg4xrarfclursjdwe3bg.png',
+            foodImageUrl:
+                'https://res.cloudinary.com/dfsucyg30/image/upload/v1690969066/yg4xrarfclursjdwe3bg.png',
             foodPrice: '25$',
             time: '5s',
-        }
+        },
     ];
     const categories = [
         { title: '⭐ Popular', tag: 'popular' },
@@ -66,13 +71,14 @@ const HomeScreen = ({ navigation }) => {
     ];
     return (
         <SafeAreaView className="flex-1 pb-20">
-            <ScrollView className="px-2 pt-1 flex-1" stickyHeaderIndices={[2]}>
-                <View className="p-2 flex-row justify-between items-center">
+            <StatusBar backgroundColor="orange" />
+            <ScrollView className="flex-1" stickyHeaderIndices={[2]}>
+                <View className="p-2 flex-row justify-between items-center bg-[#FFA500]">
                     <View>
-                        <Text className="text-lg text-gray-500">
-                            Hi Foodie,
+                        <Text className="text-lg text-black">Hi Foodie,</Text>
+                        <Text className="text-xl font-bold text-gray-600">
+                            Hungry Today?
                         </Text>
-                        <Text className="text-xl font-bold">Hungry Today?</Text>
                     </View>
                     <View className="items-center justify-center">
                         <Image
@@ -87,9 +93,9 @@ const HomeScreen = ({ navigation }) => {
                     <MagnifyingGlassIcon size={25} color="black" />
                     <TextInput
                         onChangeText={e => {
-                            setfilterfoodData(e.target.value); // need to fetch food for searching
+                            setfilter(e); // need to fetch food for searching
                         }}
-                        className="flex-1 px-2"
+                        className="flex-1 px-2 text-black"
                         type="text"
                         placeholder="Search here..."
                     />
@@ -110,13 +116,13 @@ const HomeScreen = ({ navigation }) => {
                                 className={
                                     filter === category.tag
                                         ? 'px-3 py-2 rounded-xl bg-black mx-2'
-                                        : 'px-3 py-2 rounded-xl border-gray-300 border-[0.5px] mx-2'
+                                        : 'px-3 py-2 rounded-xl border-black border-[0.5px] mx-2'
                                 }>
                                 <Text
                                     className={
                                         filter === category.tag
                                             ? 'text-white'
-                                            : ''
+                                            : 'text-black'
                                     }>
                                     {category.title}
                                 </Text>

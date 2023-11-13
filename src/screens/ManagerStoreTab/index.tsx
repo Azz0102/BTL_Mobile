@@ -1,21 +1,20 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import HomeScreen from './HomeScreen';
 import Empty from '../Empty';
 import Header from '../../components/Header';
-import UserProfile from '../UserProfile';
+import ManagerStoreScreen from '../ManagerStoreScreen';
 
 // import FoodDetailsScreen from './FoodDetailsScreen';
 
-const UsernScreens = () => {
+const ManagerStoreTab = () => {
     const Stack = createNativeStackNavigator();
     return (
         <>
             <Stack.Navigator>
                 <Stack.Screen
                     options={{ headerShown: false }}
-                    name="HomeScreen"
-                    component={UserProfile}
+                    name="ManagerStoreScreen"
+                    component={ManagerStoreScreen}
                 />
                 <Stack.Screen
                     options={{
@@ -23,7 +22,7 @@ const UsernScreens = () => {
                             <Header share={true} navigation={navigation} />
                         ),
                     }}
-                    name="FoodDetails"
+                    name="AddRestaurant"
                     component={Empty}
                 />
             </Stack.Navigator>
@@ -31,4 +30,4 @@ const UsernScreens = () => {
     );
 };
 
-export default UsernScreens;
+export default ManagerStoreTab;

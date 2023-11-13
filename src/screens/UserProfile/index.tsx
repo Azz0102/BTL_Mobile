@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UserHeader from '../../components/UserHeader';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {
     CurrencyDollarIcon,
     GiftIcon,
@@ -34,37 +34,36 @@ const UserProfile = () => {
             <View style={styles.wallet}>
                 <View className="flex flex-col m-2">
                     <View className="flex flex-row items-center">
-                        <Text>12</Text>
+                        <Text className="text-black">12</Text>
                         <CurrencyDollarIcon size={27} color="rgb(21 128 61)" />
                     </View>
-                    <Text>Available balance</Text>
+                    <Text className="text-black">Available balance</Text>
                 </View>
                 <TouchableOpacity style={styles.giftIcon}>
-                    <GiftIcon size={27} color="rgb(255 255 255)" />
+                    <GiftIcon size={27} color="orange" />
                 </TouchableOpacity>
             </View>
             <View className="flex flex-row relative top-12 w-full justify-around items-center h-20 px-2 mt-5 ">
                 <TouchableOpacity className="bg-slate-800 w-1/3 h-full flex justify-center items-center mr-5 rounded-2xl">
                     <ShoppingBagIcon size={30} color={'rgb(243 244 246)'} />
-                    <Text className = 'text-white'>Orders</Text>
+                    <Text className="text-white">Orders</Text>
                 </TouchableOpacity>
                 <TouchableOpacity className="bg-slate-800 w-1/3 h-full flex justify-center items-center mr-5 rounded-2xl">
                     <CurrencyDollarIcon size={30} color={'rgb(243 244 246)'} />
-                    <Text className = 'text-white'>CashPoints</Text>
+                    <Text className="text-white">CashPoints</Text>
                 </TouchableOpacity>
                 <TouchableOpacity className="bg-slate-800 w-1/3 h-full flex justify-center items-center rounded-2xl">
                     <HeartIcon size={30} color={'rgb(243 244 246)'} />
-                    <Text className = 'text-white'>Favourites</Text>
+                    <Text className="text-white">Favourites</Text>
                 </TouchableOpacity>
             </View>
-            <View></View>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     UserInfo: {
-        backgroundColor: 'rgb(255 237 213)',
+        backgroundColor: 'orange',
         display: 'flex',
         flexDirection: 'row',
     },
@@ -100,7 +99,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 60,
         width: 60,
-        backgroundColor: 'rgb(255 237 213)',
         borderRadius: 15,
         position: 'absolute',
         right: '5%',

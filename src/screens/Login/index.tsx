@@ -11,6 +11,7 @@ import auth from '@react-native-firebase/auth';
 import {
     useSafeAreaInsets,
     initialWindowMetrics,
+    SafeAreaView,
 } from 'react-native-safe-area-context';
 import { Field, Formik } from 'formik';
 import * as yup from 'yup';
@@ -74,7 +75,7 @@ const Login = ({ navigation }) => {
         return auth().signInWithCredential(googleCredential);
     }
     return (
-        <View
+        <SafeAreaView
             style={{
                 // Paddings to handle safe area
                 paddingTop:
@@ -187,7 +188,7 @@ const Login = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     );
 };
 

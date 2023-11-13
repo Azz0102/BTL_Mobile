@@ -26,9 +26,14 @@ import DelnScreens from '../../screens/DelnScreens';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeScreen from '../../screens/HomeScreen';
 import Empty from '../../screens/Empty';
+import AddProfile from '../../screens/AddProfile';
+import ListProfile from '../../screens/ListProfile';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ServantScreen from '../../screens/ServantScreen';
+import ManagerScreen from '../../screens/ManagerScreen';
 
 const Tab = createBottomTabNavigator();
-const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
 const Tabs = ({ navigation }) => {
     // const user = firebaseAuth.auth().currentUser;
@@ -68,13 +73,57 @@ const Tabs = ({ navigation }) => {
     return (
         <>
             {!isAccepted && (
-                <Drawer.Navigator initialRouteName="Home">
-                    <Drawer.Screen name="Home" component={Empty} />
-                    <Drawer.Screen
-                        name="AppBottomStack"
-                        component={AppBottomStack}
+                <Stack.Navigator initialRouteName="Home">
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="ListProfile"
+                        component={ListProfile}
                     />
-                </Drawer.Navigator>
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="AddProfile"
+                        component={AddProfile}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="Customer"
+                        component={AddProfile}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="Manager"
+                        component={ManagerScreen}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="Chef"
+                        component={AddProfile}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="Servant"
+                        component={ServantScreen}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="Cashier"
+                        component={AddProfile}
+                    />
+                </Stack.Navigator>
             )}
             {/* {isAccepted && (
                 <Modal

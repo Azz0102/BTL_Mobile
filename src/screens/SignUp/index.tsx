@@ -80,7 +80,7 @@ const SignUp = ({ navigation }) => {
     };
 
     return (
-        <View
+        <SafeAreaView
             style={{
                 // Paddings to handle safe area
                 paddingTop:
@@ -111,7 +111,10 @@ const SignUp = ({ navigation }) => {
             </SafeAreaView>
             <View
                 className="flex-1 bg-white px-8 pt-8"
-                style={{ borderTopLeftRadius: 50, borderTopRightRadius: 50 }}>
+                style={{
+                    borderTopLeftRadius: 50,
+                    borderTopRightRadius: 50,
+                }}>
                 <View className="form space-y-2">
                     <Formik
                         initialValues={{
@@ -196,7 +199,7 @@ const SignUp = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     );
 };
 

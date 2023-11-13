@@ -4,18 +4,19 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Empty from '../Empty';
 import Header from '../../components/Header';
 import UserProfile from '../UserProfile';
+import ManagerHomeScreen from '../ManagerHomeScreen';
 
 // import FoodDetailsScreen from './FoodDetailsScreen';
 
-const UsernScreens = () => {
+const ManagerHomeTab = () => {
     const Stack = createNativeStackNavigator();
     return (
         <>
             <Stack.Navigator>
                 <Stack.Screen
                     options={{ headerShown: false }}
-                    name="HomeScreen"
-                    component={UserProfile}
+                    name="ManagerHomeScreen"
+                    component={ManagerHomeScreen}
                 />
                 <Stack.Screen
                     options={{
@@ -23,7 +24,7 @@ const UsernScreens = () => {
                             <Header share={true} navigation={navigation} />
                         ),
                     }}
-                    name="FoodDetails"
+                    name="AddRestaurant"
                     component={Empty}
                 />
             </Stack.Navigator>
@@ -31,4 +32,4 @@ const UsernScreens = () => {
     );
 };
 
-export default UsernScreens;
+export default ManagerHomeTab;
