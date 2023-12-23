@@ -13,6 +13,7 @@ import {
 } from 'react-native-heroicons/solid';
 import NetInfo, { NetInfoSubscription } from '@react-native-community/netinfo';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import FlashMessage from 'react-native-flash-message';
 
 export default function App() {
     const [modalVisible, setModalVisible] = useState(false);
@@ -80,6 +81,7 @@ export default function App() {
                             </View>
                         </Modal>
                         {!modalVisible && <MasterNav />}
+                        <FlashMessage position="top" />
                         <StatusBar style="dark" />
                     </RootSiblingParent>
                 </NavigationContainer>

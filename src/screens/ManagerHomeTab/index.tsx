@@ -5,6 +5,7 @@ import Empty from '../Empty';
 import Header from '../../components/Header';
 import UserProfile from '../UserProfile';
 import ManagerHomeScreen from '../ManagerHomeScreen';
+import AddRestaurantScreen from '../AddRestaurantScreen';
 
 // import FoodDetailsScreen from './FoodDetailsScreen';
 
@@ -25,7 +26,7 @@ const ManagerHomeTab = () => {
                         ),
                     }}
                     name="AddRestaurant"
-                    component={Empty}
+                    component={AddRestaurantScreen}
                 />
             </Stack.Navigator>
         </>

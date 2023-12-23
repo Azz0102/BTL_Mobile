@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { MagnifyingGlassIcon } from 'react-native-heroicons/solid';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import FoodCard from '../../components/FoodCard';
+import FoodCard from '../../components/RestaurantCard';
 
 const HomeScreen = ({ navigation }) => {
     const [sortfoodData, setsortfoodData] = useState(null);

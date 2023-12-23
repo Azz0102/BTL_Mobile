@@ -102,10 +102,10 @@ const SignUp = ({ navigation }) => {
             }}
             className="flex-1 bg-white">
             <SafeAreaView className="flex">
-                <View className="flex-row justify-center">
+                <View className="flex-row justify-center mt-4">
                     <Image
-                        source={require('../../../assets/images/signup.png')}
-                        style={{ width: 165, height: 110 }}
+                        source={require('../../../assets/icons/icons8-store-96.png')}
+                        style={{ width: 200, height: 200 }}
                     />
                 </View>
             </SafeAreaView>

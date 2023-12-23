@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Button,
     FlatList,
@@ -12,57 +12,39 @@ import Animated, { FadeInUp, FadeOutDown } from 'react-native-reanimated';
 import EmPloyeeItem from '../EmployeeItem';
 import MenuItem from '../MenuItem';
 import { PlusCircleIcon, PencilSquareIcon } from 'react-native-heroicons/solid';
-
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d73',
-        title: 'Third Item1',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d74',
-        title: 'Third Item2',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d75',
-        title: 'Third Item3',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d76',
-        title: 'Third Item4',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d77',
-        title: 'Third Item5',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d78',
-        title: 'Third Item6',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d79',
-        title: 'Third Item7',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d70',
-        title: 'Third Item8',
-    },
-];
+import instance from '../../services/instance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MenuTab = ({ navigation }) => {
     const [isEditFood, setIsEditFood] = useState(false);
     const [isEditDrink, setIsEditDrink] = useState(false);
+    const [foodList, setFoodList] = useState([{}]);
+
+    useEffect(() => {
+        const getFoodAndDrink = async () => {
+            try {
+                const resID = await AsyncStorage.getItem('resId');
+                const res = await instance.get(
+                    `Menu/GetMenu?Restaurant_id=${resID}`,
+                );
+                console.log(res.data);
+                // res.data.map(item => {
+                //     if (item.Food_id) {
+                //         let foodlist1 = foodList;
+                //         setFoodList(foodlist1.push(item));
+                //     } else {
+                //         let drinklist1 = drinkList;
+                //         setDrinkList(drinklist1.push(item));
+                //     }
+                //     console.log(item);
+                // });
+                setFoodList(res.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getFoodAndDrink();
+    }, []);
 
     return (
         <Animated.ScrollView
@@ -74,7 +56,11 @@ const MenuTab = ({ navigation }) => {
                     Food
                 </Text>
                 <View className="flex flex-row mt-2 mr-2">
-                    <TouchableOpacity className="mr-2">
+                    <TouchableOpacity
+                        className="mr-2"
+                        onPress={() => {
+                            navigation.navigate('AddMenuItemScreen');
+                        }}>
                         <PlusCircleIcon size={27} color="gray" />
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -85,21 +71,35 @@ const MenuTab = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {DATA.map((item, index) => {
-                return (
-                    <MenuItem
-                        key={index}
-                        title={item.title}
-                        isEdit={isEditFood}
-                    />
-                );
+            {foodList.map((item, index) => {
+                if (item.Food_id) {
+                    return (
+                        <MenuItem
+                            key={index}
+                            title={item.Name}
+                            isEdit={isEditFood}
+                            navigation={navigation}
+                            description={item.DescribeFood}
+                            price={item.Food_Price}
+                            avatar={item.food_Avatar}
+                            id={item.Food_id}
+                            menuid={item.Menu_id}
+                            setFoodList={setFoodList}
+                            type="food"
+                        />
+                    );
+                }
             })}
             <View className="ml-4 flex flex-row items-center justify-between">
                 <Text className="text-gray-600 text-2xl font-bold mt-1">
                     Drink
                 </Text>
                 <View className="flex flex-row mt-2 mr-2">
-                    <TouchableOpacity className="mr-2">
+                    <TouchableOpacity
+                        className="mr-2"
+                        onPress={() => {
+                            navigation.navigate('AddMenuItemScreen', {});
+                        }}>
                         <PlusCircleIcon size={27} color="gray" />
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -110,14 +110,24 @@ const MenuTab = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {DATA.map((item, index) => {
-                return (
-                    <MenuItem
-                        key={index}
-                        title={item.title}
-                        isEdit={isEditDrink}
-                    />
-                );
+            {foodList.map((item, index) => {
+                if (item.Drink_id) {
+                    return (
+                        <MenuItem
+                            key={index}
+                            title={item.Drink_name}
+                            isEdit={isEditDrink}
+                            navigation={navigation}
+                            description={item.Drink_Description}
+                            price={item.Drink_price}
+                            avatar={item.Avatar}
+                            id={item.Drink_id}
+                            menuid={item.Menu_id}
+                            setFoodList={setFoodList}
+                            type="drink"
+                        />
+                    );
+                }
             })}
         </Animated.ScrollView>
     );

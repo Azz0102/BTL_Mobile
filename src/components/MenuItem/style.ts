@@ -13,6 +13,6 @@ export const styles = StyleSheet.create({
     },
     role: {
         color: 'black',
-        fontSize: 20,
+        fontSize: 16,
     },
 });

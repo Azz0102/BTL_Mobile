@@ -98,7 +98,7 @@ const Login = ({ navigation }) => {
             className="flex-1 bg-white">
             <View className="flex-row justify-center">
                 <Image
-                    source={require('../../../assets/images/login.png')}
+                    source={require('../../../assets/icons/icons8-store-96.png')}
                     style={{ width: 200, height: 200 }}
                 />
             </View>

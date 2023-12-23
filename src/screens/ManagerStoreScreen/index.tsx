@@ -6,12 +6,14 @@ import {
     Squares2X2Icon,
     InformationCircleIcon,
     NewspaperIcon,
+    ClipboardDocumentIcon,
 } from 'react-native-heroicons/outline';
 import BottomSlider from '../../components/BottomSlider';
 import EmPloyeeTab from '../../components/EmployeeTab';
 import TablesTab from '../../components/TablesTab';
 import MenuTab from '../../components/MenuTab';
 import InfoTab from '../../components/InfoTab';
+import OrderTab from '../../components/OrderTab';
 
 const ManagerStoreScreen = ({ navigation }) => {
     const [isHaveRestaurant, setIsHaveRestaurant] = useState(true);
@@ -21,7 +23,7 @@ const ManagerStoreScreen = ({ navigation }) => {
         if (isSelectedTab === 0) {
             return <EmPloyeeTab navigation={navigation} />;
         } else if (isSelectedTab === 1) {
-            return <TablesTab navigation={navigation} />;
+            return <OrderTab navigation={navigation} />;
         } else if (isSelectedTab === 2) {
             return <MenuTab navigation={navigation} />;
         } else {
@@ -55,10 +57,13 @@ const ManagerStoreScreen = ({ navigation }) => {
                         }}>
                         <View className="flex flex-row items-center">
                             <View className="pl-2">
-                                <Squares2X2Icon size={20} color="black" />
+                                <ClipboardDocumentIcon
+                                    size={20}
+                                    color="black"
+                                />
                             </View>
                             <Text className="text-black mx-2 mb-1 text-lg">
-                                Tables
+                                Orders
                             </Text>
                         </View>
                         <BottomSlider isSelected={isSelectedTab} index={1} />

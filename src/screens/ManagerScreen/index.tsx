@@ -27,6 +27,7 @@ import UsernScreens from '../../screens/UsernScreens';
 import DelnScreens from '../../screens/DelnScreens';
 import ManagerHomeTab from '../ManagerHomeTab';
 import ManagerStoreTab from '../ManagerStoreTab';
+import ChatScreen from '../ChatScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -107,7 +108,7 @@ const ManagerScreen = ({ navigation }) => {
             />
             <Tab.Screen
                 name="Message"
-                component={DelnScreens}
+                component={ChatScreen}
                 options={{
                     tabBarShowLabel: false,
                     headerStyle: {
@@ -120,6 +121,7 @@ const ManagerScreen = ({ navigation }) => {
                             title=""
                         />
                     ),
+                    headerShown: false,
                     headerShadowVisible: false,
                     tabBarStyle: {
                         position: 'absolute',

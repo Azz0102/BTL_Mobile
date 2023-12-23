@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     FlatList,
@@ -6,6 +6,7 @@ import {
     Platform,
     TouchableOpacity,
     StatusBar,
+    ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -16,56 +17,62 @@ import {
 import ProfileItem from '../../components/ProfileItem';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d73',
-        title: 'Third Item1',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d74',
-        title: 'Third Item2',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d75',
-        title: 'Third Item3',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d76',
-        title: 'Third Item4',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d77',
-        title: 'Third Item5',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d78',
-        title: 'Third Item6',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d79',
-        title: 'Third Item7',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d70',
-        title: 'Third Item8',
-    },
-];
+import instance from '../../services/instance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ListProfile = ({ navigation }) => {
     const insets = useSafeAreaInsets();
+    const [listProfile, setListProfile] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const getListProfile = async () => {
+            try {
+                const data = await instance.get(
+                    `/Users/GetProfiles?UserID=${auth().currentUser?.uid}`,
+                );
+                console.log(data.data);
+                setIsLoading(false);
+                setListProfile(data.data);
+                return data;
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getListProfile();
+
+        const postUidAndToken = async () => {
+            if (
+                auth().currentUser?.metadata.creationTime !==
+                auth().currentUser?.metadata.lastSignInTime
+            ) {
+                try {
+                    const token = await auth().currentUser?.getIdToken();
+                    console.log(token);
+                    const data = await instance.post('Users/signin', {
+                        email: auth().currentUser?.email,
+                        uid: auth().currentUser?.uid,
+                        token: token,
+                    });
+                    console.log(data.data);
+                } catch (error) {
+                    console.log(error);
+                }
+            } else {
+                try {
+                    const data = await instance.post('Users/register', {
+                        email: auth().currentUser?.email,
+                        uid: auth().currentUser?.uid,
+                        token: auth().currentUser?.getIdToken(),
+                        PhoneNumber: '0963832667',
+                    });
+                } catch (error) {
+                    console.log('sign up error');
+                }
+            }
+        };
+        postUidAndToken();
+    }, []);
 
     return (
         <SafeAreaView>
@@ -89,7 +96,7 @@ const ListProfile = ({ navigation }) => {
                             ? insets.right
                             : initialWindowMetrics?.insets.right,
                 }}
-                className="flex bg-white">
+                className="flex bg-white h-full">
                 <StatusBar backgroundColor="white" />
                 <View className="flex mr-3">
                     <TouchableOpacity
@@ -115,14 +122,23 @@ const ListProfile = ({ navigation }) => {
                     onPress={() => navigation.navigate('AddProfile')}>
                     <Text className="text-cyan-500 text-lg">+ Add Profile</Text>
                 </TouchableOpacity>
-                <FlatList
-                    data={DATA}
-                    contentContainerStyle={{ paddingBottom: 350 }}
-                    renderItem={({ item }) => (
-                        <ProfileItem title={item.title} />
-                    )}
-                    keyExtractor={item => item.id}
-                />
+                {isLoading ? (
+                    <ActivityIndicator color="orange" size={30} />
+                ) : (
+                    <FlatList
+                        data={listProfile}
+                        contentContainerStyle={{ paddingBottom: 350 }}
+                        renderItem={({ item }) => (
+                            <ProfileItem
+                                title={item.UserID}
+                                id={item.ID}
+                                navigation={navigation}
+                                role={item.Role}
+                            />
+                        )}
+                        keyExtractor={item => item.ID}
+                    />
+                )}
             </View>
         </SafeAreaView>
     );

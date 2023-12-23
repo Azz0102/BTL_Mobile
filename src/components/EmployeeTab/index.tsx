@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+    ActivityIndicator,
     Button,
     FlatList,
     Image,
@@ -10,68 +11,67 @@ import {
 import Animated, { FadeInUp, FadeOutDown } from 'react-native-reanimated';
 
 import EmPloyeeItem from '../EmployeeItem';
+import instance from '../../services/instance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d73',
-        title: 'Third Item1',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d74',
-        title: 'Third Item2',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d75',
-        title: 'Third Item3',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d76',
-        title: 'Third Item4',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d77',
-        title: 'Third Item5',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d78',
-        title: 'Third Item6',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d79',
-        title: 'Third Item7',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d70',
-        title: 'Third Item8',
-    },
-];
+const EmPloyeeTab = ({ navigation }: { navigation: any }) => {
+    const [listEmployee, setListEmployee] = useState([{}]);
+    const [isLoading, setIsLoading] = useState(true);
 
-const EmPloyeeTab = ({ navigation }) => {
+    useEffect(() => {
+        const getEmployee = async () => {
+            try {
+                const resID = await AsyncStorage.getItem('resId');
+                const token = await AsyncStorage.getItem('profile_token');
+                const res = await instance.get(
+                    `/Restaurants/GetEmployee?Restaurant_id=${resID}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    },
+                );
+                console.log(res.data);
+                setListEmployee(res.data);
+            } catch (error) {
+                console.log(error);
+            }
+            setIsLoading(false);
+        };
+
+        getEmployee();
+    }, []);
     return (
         <Animated.View
             entering={FadeInUp}
             exiting={FadeOutDown}
             className="flex-1">
-            <TouchableOpacity className="rounded-lg border-2 border-blue-700 m-4 items-center">
+            <TouchableOpacity
+                className="rounded-lg border-2 border-blue-700 m-4 items-center"
+                onPress={() => {
+                    navigation.navigate('AddEmployee');
+                }}>
                 <Text className="text-black m-2 text-lg">+ Add Employee</Text>
             </TouchableOpacity>
-            <FlatList
-                data={DATA}
-                renderItem={({ item }) => <EmPloyeeItem title={item.title} />}
-                keyExtractor={item => item.id}
-            />
+            {isLoading ? (
+                <View className="w-full items-center justify-center h-50">
+                    <ActivityIndicator size={50} color="white" />
+                </View>
+            ) : (
+                <FlatList
+                    data={listEmployee}
+                    renderItem={({ item }) => (
+                        <EmPloyeeItem
+                            title={item.CodeName}
+                            role={item.Role}
+                            id={item.ID}
+                            setList={setListEmployee}
+                            navigation={navigation}
+                        />
+                    )}
+                    keyExtractor={item => item.CodeName}
+                />
+            )}
         </Animated.View>
     );
 };

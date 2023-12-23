@@ -10,4 +10,15 @@ export const styles = StyleSheet.create({
     dropDown: {
         borderRadius: 10,
     },
+    phoneNumberInput: {
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: 'black',
+        color: 'black',
+        width: '70%',
+        justifyContent: 'center',
+        alignContent: 'center',
+        textAlign: 'center',
+        fontSize: 20,
+    },
 });

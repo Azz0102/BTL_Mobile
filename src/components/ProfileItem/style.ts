@@ -8,11 +8,11 @@ export const styles = StyleSheet.create({
     },
     name: {
         color: 'black',
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: 'bold',
     },
     role: {
         color: 'black',
-        fontSize: 20,
+        fontSize: 16,
     },
 });

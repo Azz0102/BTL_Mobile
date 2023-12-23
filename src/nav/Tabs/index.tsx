@@ -31,6 +31,9 @@ import ListProfile from '../../screens/ListProfile';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ServantScreen from '../../screens/ServantScreen';
 import ManagerScreen from '../../screens/ManagerScreen';
+import CustomerScreen from '../../screens/CustomerScreen';
+import ChefScreen from '../../screens/ChefScreen';
+import CashierScreen from '../../screens/CashierScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -93,7 +96,7 @@ const Tabs = ({ navigation }) => {
                             headerShown: false,
                         }}
                         name="Customer"
-                        component={AddProfile}
+                        component={CustomerScreen}
                     />
                     <Stack.Screen
                         options={{
@@ -107,7 +110,7 @@ const Tabs = ({ navigation }) => {
                             headerShown: false,
                         }}
                         name="Chef"
-                        component={AddProfile}
+                        component={ChefScreen}
                     />
                     <Stack.Screen
                         options={{
@@ -121,7 +124,7 @@ const Tabs = ({ navigation }) => {
                             headerShown: false,
                         }}
                         name="Cashier"
-                        component={AddProfile}
+                        component={CashierScreen}
                     />
                 </Stack.Navigator>
             )}
