@@ -55,6 +55,8 @@ const ListProfile = ({ navigation }) => {
                         token: token,
                     });
                     console.log(data.data);
+                    await AsyncStorage.setItem('userName', data.data.Name);
+                    await AsyncStorage.setItem('userAvatar', data.data.Avatar);
                 } catch (error) {
                     console.log(error);
                 }
@@ -66,6 +68,9 @@ const ListProfile = ({ navigation }) => {
                         token: auth().currentUser?.getIdToken(),
                         PhoneNumber: '0963832667',
                     });
+                    console.log(data.data);
+                    await AsyncStorage.setItem('userName', data.data.Name);
+                    await AsyncStorage.setItem('userAvatar', data.data.Avatar);
                 } catch (error) {
                     console.log('sign up error');
                 }

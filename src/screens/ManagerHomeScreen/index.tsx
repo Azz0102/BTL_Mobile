@@ -23,6 +23,8 @@ const ManagerHomeScreen = ({ navigation, id }) => {
     const [isHaveRestaurant, setIsHaveRestaurant] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const [InfoRestaurant, setInfoRestaurant] = useState({});
+    const [userAvatar, setUserAvatar] = useState('');
+    const [userName, setUserName] = useState('');
 
     useEffect(() => {
         const getResInfo = async () => {
@@ -44,6 +46,15 @@ const ManagerHomeScreen = ({ navigation, id }) => {
             }
         };
         getResInfo();
+        const getUserInfo = async () => {
+            const name = await AsyncStorage.getItem('userName');
+            const avatar = await AsyncStorage.getItem('userAvatar');
+
+            setUserName(name);
+            setUserAvatar(avatar);
+        };
+
+        getUserInfo();
     }, []);
 
     return (
@@ -52,16 +63,18 @@ const ManagerHomeScreen = ({ navigation, id }) => {
             <View className="flex flex-1">
                 <View className="p-2 flex-row justify-between items-center bg-[#FFA500]">
                     <View>
-                        <Text className="text-lg text-black">Hi Foodie,</Text>
+                        <Text className="text-lg text-black">
+                            Hi {userName}
+                        </Text>
                         <Text className="text-xl font-bold text-gray-600">
-                            Hungry Today?
+                            How Are You Today?
                         </Text>
                     </View>
                     <View className="items-center justify-center">
                         <Image
                             className="h-16 w-16"
                             source={{
-                                uri: 'https://reactnative.dev/img/tiny_logo.png',
+                                uri: userAvatar,
                             }}
                         />
                     </View>

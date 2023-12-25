@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Image, Text, TouchableOpacity, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Image,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import {
@@ -23,6 +29,8 @@ const ChefHomeScreen = ({ navigation }) => {
     const [isHaveRestaurant, setIsHaveRestaurant] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const [InfoRestaurant, setInfoRestaurant] = useState({});
+    const [userAvatar, setUserAvatar] = useState('');
+    const [userName, setUserName] = useState('');
 
     const [isSelectedTab, setIsSelectedTab] = useState(0);
     useEffect(() => {
@@ -40,6 +48,15 @@ const ChefHomeScreen = ({ navigation }) => {
             }
         };
         getResInfo();
+        const getUserInfo = async () => {
+            const name = await AsyncStorage.getItem('userName');
+            const avatar = await AsyncStorage.getItem('userAvatar');
+
+            setUserName(name);
+            setUserAvatar(avatar);
+        };
+
+        getUserInfo();
     }, []);
 
     const handleSelectedTab = () => {
@@ -57,12 +74,12 @@ const ChefHomeScreen = ({ navigation }) => {
                                 source={{ uri: InfoRestaurant.Avatar }}
                             />
                             <View>
-                                <Text className="text-black p-5 text-4xl mt-10">
+                                <Text className="text-black p-2 text-4xl mt-1">
                                     {InfoRestaurant.Name}
                                 </Text>
                             </View>
                             <View className="w-full grow flex items-center justify-center">
-                                <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row my-2 rounded-lg items-center">
+                                <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row mb-2 rounded-lg items-center">
                                     <View className="pl-4">
                                         <UserGroupIcon
                                             size={26}
@@ -78,14 +95,14 @@ const ChefHomeScreen = ({ navigation }) => {
                                         <ClockIcon size={26} color="black" />
                                     </View>
                                     <Text className="py-4 px-2 text-xl">
-                                        10 AM - 10 PM
+                                        {InfoRestaurant.Time}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row my-2 rounded-lg items-center">
                                     <View className="pl-4">
                                         <MapPinIcon size={26} color="black" />
                                     </View>
-                                    <Text className="py-4 px-2 text-xl">
+                                    <Text className="py-4 px-2 text-xl w-5/6">
                                         {InfoRestaurant.Address}
                                     </Text>
                                 </TouchableOpacity>
@@ -113,16 +130,18 @@ const ChefHomeScreen = ({ navigation }) => {
             <View className="flex flex-1">
                 <View className="p-2 flex-row justify-between items-center bg-[#FFA500]">
                     <View>
-                        <Text className="text-lg text-black">Hi Foodie,</Text>
+                        <Text className="text-lg text-black">
+                            Hi {userName}
+                        </Text>
                         <Text className="text-xl font-bold text-gray-600">
-                            Hungry Today?
+                            How Are You Today?
                         </Text>
                     </View>
                     <View className="items-center justify-center">
                         <Image
                             className="h-16 w-16"
                             source={{
-                                uri: 'https://reactnative.dev/img/tiny_logo.png',
+                                uri: userAvatar,
                             }}
                         />
                     </View>

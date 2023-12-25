@@ -23,6 +23,8 @@ import { VictoryBar, VictoryChart } from 'victory-native';
 
 const UserProfile = ({ navigation }) => {
     const [profileInfo, setProfileInfo] = useState({});
+    const [userAvatar, setUserAvatar] = useState('');
+    const [userName, setUserName] = useState('');
 
     useEffect(() => {
         const setEnabled = async () => {
@@ -38,6 +40,16 @@ const UserProfile = ({ navigation }) => {
             }
         };
         setEnabled();
+
+        const getUserInfo = async () => {
+            const name = await AsyncStorage.getItem('userName');
+            const avatar = await AsyncStorage.getItem('userAvatar');
+
+            setUserName(name);
+            setUserAvatar(avatar);
+        };
+
+        getUserInfo();
     }, []);
 
     return (
@@ -47,11 +59,11 @@ const UserProfile = ({ navigation }) => {
                 <Image
                     style={styles.image}
                     source={{
-                        uri: 'https://reactnative.dev/img/tiny_logo.png',
+                        uri: userAvatar,
                     }}
                 />
                 <View className="flex flex-col m-3">
-                    <Text style={styles.text}>Kanra12</Text>
+                    <Text style={styles.text}>{userName}</Text>
                     <TouchableOpacity style={styles.button}>
                         <Text>{profileInfo.Role}</Text>
                     </TouchableOpacity>

@@ -23,7 +23,26 @@ const ChefWorkTab = ({ navigation }) => {
     const [resId, setResId] = useState(null);
 
     const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = async () => {};
+    const toggleSwitch = async () => {
+        try {
+            const token = await AsyncStorage.getItem('profile_token');
+            const res = await instance.patch(
+                '/Users/updateProfile',
+                {
+                    isWorking: !isEnabled === true ? '1' : '0',
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + token,
+                    },
+                },
+            );
+            console.log(res);
+            setIsEnabled(current => !current);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     const updateSearch = search => {
         setSearch(search);
     };

@@ -19,6 +19,8 @@ const CustomerHomeScreen = ({ navigation }) => {
     const [restaurantList, setRestaurantList] = useState([]);
     const [filter, setfilter] = useState('none');
     const [isLoading, setIsLoading] = useState(false);
+    const [userAvatar, setUserAvatar] = useState('');
+    const [userName, setUserName] = useState('');
 
     useEffect(() => {
         const getRestaurantList = async () => {
@@ -36,55 +38,17 @@ const CustomerHomeScreen = ({ navigation }) => {
             }
         };
         getRestaurantList();
+        const getUserInfo = async () => {
+            const name = await AsyncStorage.getItem('userName');
+            const avatar = await AsyncStorage.getItem('userAvatar');
+
+            setUserName(name);
+            setUserAvatar(avatar);
+        };
+
+        getUserInfo();
     }, []);
 
-    const filterfoodData = [
-        {
-            id: 1,
-            foodName: 'Poha',
-            available: true,
-            foodImageUrl:
-                'https://res.cloudinary.com/dfsucyg30/image/upload/v1690964445/nxuiyqocgn0av3w7uszi.png',
-            foodPrice: '25$',
-            time: '2s',
-        },
-        {
-            id: 2,
-            foodName: 'Samosa',
-            available: true,
-            foodImageUrl:
-                'https://res.cloudinary.com/dfsucyg30/image/upload/v1690964504/vanzrpqb0nwrmtxa9mau.png',
-            foodPrice: '50$',
-            time: '5s',
-        },
-        {
-            id: 3,
-            foodName: 'Egg Rice',
-            available: true,
-            foodImageUrl:
-                'https://res.cloudinary.com/dfsucyg30/image/upload/v1690968955/dfk4fhclsuf9clv9hpkv.png',
-            foodPrice: '15$',
-            time: '5s',
-        },
-        {
-            id: 4,
-            foodName: 'Hamburger',
-            available: true,
-            foodImageUrl:
-                'https://res.cloudinary.com/dfsucyg30/image/upload/v1690968994/hwq1jyyg0omlilmgppip.png',
-            foodPrice: '30$',
-            time: '5s',
-        },
-        {
-            id: 5,
-            foodName: 'Pizza',
-            available: true,
-            foodImageUrl:
-                'https://res.cloudinary.com/dfsucyg30/image/upload/v1690969066/yg4xrarfclursjdwe3bg.png',
-            foodPrice: '25$',
-            time: '5s',
-        },
-    ];
     const categories = [
         { title: '⭐ Popular', tag: 'popular' },
         { title: '🥪 Breakfast', tag: 'breakfast' },
@@ -98,7 +62,9 @@ const CustomerHomeScreen = ({ navigation }) => {
             <ScrollView className="flex-1 " stickyHeaderIndices={[2]}>
                 <View className="p-2 flex-row justify-between items-center bg-[#FFA500]">
                     <View>
-                        <Text className="text-lg text-black">Hi Foodie,</Text>
+                        <Text className="text-lg text-black">
+                            Hi {userName}
+                        </Text>
                         <Text className="text-xl font-bold text-gray-600">
                             Hungry Today?
                         </Text>
@@ -107,7 +73,7 @@ const CustomerHomeScreen = ({ navigation }) => {
                         <Image
                             className="h-16 w-16"
                             source={{
-                                uri: 'https://reactnative.dev/img/tiny_logo.png',
+                                uri: userAvatar,
                             }}
                         />
                     </View>

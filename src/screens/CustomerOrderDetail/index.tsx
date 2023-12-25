@@ -26,18 +26,8 @@ import OrderDetailListItem from '../../components/OrderDetailListItem';
 import TableTag from '../../components/TableTag';
 import { PlusCircleIcon } from 'react-native-heroicons/solid';
 import Modal from 'react-native-modal';
-import IdToAdd from '../../components/IdToAdd';
 import instance from '../../services/instance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const DATA = {
-    time: '10 am - 11pm',
-    location: '144 Xuân Thủy',
-    description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at felis at quam gravida commodo nec sit amet urna. Ut in vehicula massa. Fusce a pretium risus, ut bibendum enim. ',
-};
-
-const OrderItems = [1, 2, 3, 4, 5];
 
 const CustomerOrderDetail = ({ navigation, route }) => {
     const [role, setRole] = useState('Customer');
@@ -51,6 +41,7 @@ const CustomerOrderDetail = ({ navigation, route }) => {
     const [resInfo, setResInfo] = useState([]);
     const [tableNumber, setTableNumber] = useState(null);
     const { orderID, listFood, listDrink, total } = route.params;
+    const [servantInfo, setServantInfo] = useState('');
     console.log(orderID, listFood, listDrink);
 
     const handleUpdateOrder = async () => {
@@ -116,6 +107,15 @@ const CustomerOrderDetail = ({ navigation, route }) => {
                 console.log(res.data[0]);
                 setTableNumber(res.data[0].Table_Number);
                 setOrderInfo(res.data);
+
+                try {
+                    const data = await instance.get(
+                        `/Users/GetSpecificProfile?profileID=${res.data[0].Waitress_id}`,
+                    );
+                    setServantInfo(data.data[0].CodeName);
+                } catch (error) {
+                    console.error(error);
+                }
 
                 try {
                     const data = await instance.get(
@@ -221,6 +221,23 @@ const CustomerOrderDetail = ({ navigation, route }) => {
                                     {orderInfo[0].NumberOfCustomers} people
                                 </Text>
                             </View>
+                            <View className="m-2 flex-row items-center">
+                                <UserGroupIcon size={26} color="black" />
+                                <Text className="ml-2 text-black text-base">
+                                    {orderInfo[0].NumberOfCustomers} people
+                                </Text>
+                            </View>
+                            {role === 'Manager' && (
+                                <View className="m-2 flex-row items-center">
+                                    <Text className="text-black text-base">
+                                        Servant ID:{' '}
+                                    </Text>
+                                    <Text className="ml-2 text-black text-base">
+                                        {servantInfo}
+                                    </Text>
+                                </View>
+                            )}
+
                             <View className="m-2 flex-row items-center border-b-stone-500 border-b-2 pb-2">
                                 <Squares2X2Icon size={26} color="black" />
                                 {tableNumber && <TableTag num={tableNumber} />}
@@ -291,7 +308,7 @@ const CustomerOrderDetail = ({ navigation, route }) => {
                                     </View>
                                 </View>
                             ))}
-                            {listDrink.map(foodItem => (
+                            {listDrinks.map(foodItem => (
                                 <OrderDetailListItem navigation={navigation} />
                             ))}
                         </View>

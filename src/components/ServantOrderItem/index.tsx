@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Image,
     Text,
@@ -15,6 +15,8 @@ import {
 import Modal from 'react-native-modal';
 import Animated, { FadeInUp, FadeOutDown } from 'react-native-reanimated';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import instance from '../../services/instance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DATA = [1, 2, 3, 4, 5];
 
@@ -26,6 +28,18 @@ const ServantOrderItem = ({ item, navigation }) => {
     const [total, setTotal] = useState(0);
     const [listFood, setListFood] = useState([]);
     const [listDrink, setListDrink] = useState([]);
+
+    const handleOrder = async () => {
+        try {
+            const id = await AsyncStorage.getItem('codename');
+            const res = await instance.patch('/Orders/UpdateOrder', {
+                Waitress_id: !isChecked ? id : '',
+            });
+            console.log(res);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         const getOrder = async () => {
@@ -276,6 +290,7 @@ const ServantOrderItem = ({ item, navigation }) => {
                         if (isChecked === true) {
                             setModalVisible(true);
                         } else {
+                            handleOrder();
                             setIsChecked(true);
                         }
                     }}
@@ -309,6 +324,7 @@ const ServantOrderItem = ({ item, navigation }) => {
                                 onPress={() => {
                                     setModalVisible(false);
                                     setIsChecked(false);
+                                    handleOrder();
                                 }}>
                                 <Text>OK</Text>
                             </TouchableOpacity>

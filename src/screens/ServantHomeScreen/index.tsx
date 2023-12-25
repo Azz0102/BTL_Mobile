@@ -19,6 +19,9 @@ import { styles } from './style';
 
 const ServantHomeScreen = ({ navigation }) => {
     const [InfoRestaurant, setInfoRestaurant] = useState({});
+    const [userAvatar, setUserAvatar] = useState('');
+    const [userName, setUserName] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
 
     const [isSelectedTab, setIsSelectedTab] = useState(0);
 
@@ -31,60 +34,82 @@ const ServantHomeScreen = ({ navigation }) => {
                 );
                 console.log(data.data);
                 setInfoRestaurant(data.data[0]);
+                setIsLoading(false);
             } catch (error) {
                 console.error(error);
             }
         };
         getResInfo();
+
+        const getUserInfo = async () => {
+            const name = await AsyncStorage.getItem('userName');
+            const avatar = await AsyncStorage.getItem('userAvatar');
+
+            setUserName(name);
+            setUserAvatar(avatar);
+        };
+
+        getUserInfo();
     }, []);
 
     const handleSelectedTab = () => {
         if (isSelectedTab === 0) {
             return (
                 <View className="flex items-center bg-orange-300 grow">
-                    <Image
-                        style={styles.image}
-                        source={{ uri: InfoRestaurant.Avatar }}
-                    />
-                    <View>
-                        <Text className="text-black p-5 text-4xl mt-10">
-                            {InfoRestaurant.Name}
-                        </Text>
-                    </View>
-                    <View className="w-full grow flex items-center justify-center">
-                        <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row my-2 rounded-lg items-center">
-                            <View className="pl-4">
-                                <UserGroupIcon size={26} color="black" />
+                    {isLoading ? (
+                        <View className="w-full items-center justify-center h-1/2">
+                            <ActivityIndicator size={50} color="white" />
+                        </View>
+                    ) : (
+                        <View className="w-full h-full items-center">
+                            <Image
+                                style={styles.image}
+                                source={{ uri: InfoRestaurant.Avatar }}
+                            />
+                            <View>
+                                <Text className="text-black p-2 text-4xl mt-1">
+                                    {InfoRestaurant.Name}
+                                </Text>
                             </View>
-                            <Text className="py-4 px-2 text-xl">
-                                20 Employees
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row my-2 rounded-lg items-center">
-                            <View className="pl-4">
-                                <ClockIcon size={26} color="black" />
+                            <View className="w-full grow flex items-center justify-center">
+                                <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row mb-2 rounded-lg items-center">
+                                    <View className="pl-4">
+                                        <UserGroupIcon
+                                            size={26}
+                                            color="black"
+                                        />
+                                    </View>
+                                    <Text className="py-4 px-2 text-xl">
+                                        20 Employees
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row my-2 rounded-lg items-center">
+                                    <View className="pl-4">
+                                        <ClockIcon size={26} color="black" />
+                                    </View>
+                                    <Text className="py-4 px-2 text-xl">
+                                        {InfoRestaurant.Time}
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row my-2 rounded-lg items-center">
+                                    <View className="pl-4">
+                                        <MapPinIcon size={26} color="black" />
+                                    </View>
+                                    <Text className="py-4 px-2 text-xl w-5/6">
+                                        {InfoRestaurant.Address}
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row my-2 rounded-lg items-center">
+                                    <View className="pl-4">
+                                        <PhoneIcon size={26} color="black" />
+                                    </View>
+                                    <Text className="py-4 px-2 text-xl">
+                                        {InfoRestaurant.PhoneNumber}
+                                    </Text>
+                                </TouchableOpacity>
                             </View>
-                            <Text className="py-4 px-2 text-xl">
-                                10 AM - 10 PM
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row my-2 rounded-lg items-center">
-                            <View className="pl-4">
-                                <MapPinIcon size={26} color="black" />
-                            </View>
-                            <Text className="py-4 px-2 text-xl">
-                                {InfoRestaurant.Address}
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row my-2 rounded-lg items-center">
-                            <View className="pl-4">
-                                <PhoneIcon size={26} color="black" />
-                            </View>
-                            <Text className="py-4 px-2 text-xl">
-                                {InfoRestaurant.PhoneNumber}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+                        </View>
+                    )}
                 </View>
             );
         } else if (isSelectedTab === 1) {
@@ -98,16 +123,18 @@ const ServantHomeScreen = ({ navigation }) => {
             <View className="flex flex-1">
                 <View className="p-2 flex-row justify-between items-center bg-[#FFA500]">
                     <View>
-                        <Text className="text-lg text-black">Hi Foodie,</Text>
+                        <Text className="text-lg text-black">
+                            Hi {userName}
+                        </Text>
                         <Text className="text-xl font-bold text-gray-600">
-                            Hungry Today?
+                            How Are You Today?
                         </Text>
                     </View>
                     <View className="items-center justify-center">
                         <Image
                             className="h-16 w-16"
                             source={{
-                                uri: 'https://reactnative.dev/img/tiny_logo.png',
+                                uri: userAvatar,
                             }}
                         />
                     </View>

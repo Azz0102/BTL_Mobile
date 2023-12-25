@@ -85,7 +85,26 @@ const ServantWorkTab = ({ navigation }) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const [resId, setResId] = useState(null);
 
-    const toggleSwitch = () => {};
+    const toggleSwitch = async () => {
+        try {
+            const token = await AsyncStorage.getItem('profile_token');
+            const res = await instance.patch(
+                '/Users/updateProfile',
+                {
+                    isWorking: !isEnabled === true ? '1' : '0',
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + token,
+                    },
+                },
+            );
+            console.log(res);
+            setIsEnabled(current => !current);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         const setEnabled = async () => {
