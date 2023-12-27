@@ -12,6 +12,7 @@ const OrderMenuItem = ({
     avatar,
     setTotal,
     setFoodAndDrink,
+    des,
 }) => {
     const [quantity, setQuantity] = useState(0);
 
@@ -130,7 +131,10 @@ const OrderMenuItem = ({
             style={styles.item}
             className="flex-row items-center justify-between w-full m-0 border-b-stone-400 border-b-2"
             onPress={() => {
-                navigation.navigate('OrderMenuItemDetail');
+                navigation.navigate('OrderMenuItemDetail', {
+                    avatar,
+                    des,
+                });
             }}>
             <View className="flex-row items-center m-0">
                 <Image

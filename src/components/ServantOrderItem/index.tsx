@@ -17,8 +17,8 @@ import Animated, { FadeInUp, FadeOutDown } from 'react-native-reanimated';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import instance from '../../services/instance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const DATA = [1, 2, 3, 4, 5];
+import { ClipboardDocumentListIcon } from 'react-native-heroicons/outline';
+import { styles } from './style';
 
 const ServantOrderItem = ({ item, navigation }) => {
     const [isOrderListOpen, setIsOrderListOpen] = useState(false);
@@ -31,7 +31,7 @@ const ServantOrderItem = ({ item, navigation }) => {
 
     const handleOrder = async () => {
         try {
-            const id = await AsyncStorage.getItem('codename');
+            const id = await AsyncStorage.getItem('profileID');
             const res = await instance.patch('/Orders/UpdateOrder', {
                 Waitress_id: !isChecked ? id : '',
             });
@@ -49,6 +49,10 @@ const ServantOrderItem = ({ item, navigation }) => {
                         item.Order_id,
                     )}`,
                 );
+                const id = await AsyncStorage.getItem('profileID');
+                if (item.Waitress_id === id) {
+                    setIsChecked(true);
+                }
                 console.log(res.data);
                 setOrderInfo(res.data);
                 if (res.data) {
@@ -115,7 +119,7 @@ const ServantOrderItem = ({ item, navigation }) => {
     return (
         <View className="flex-row w-full">
             <TouchableOpacity
-                className="flex items-center justify-between m-2 border-stone-500 border-2 rounded-xl p-2"
+                className="flex items-center justify-between m-2 border-stone-500 border-2 rounded-xl p-2 w-4/5"
                 onPress={() => {
                     navigation.navigate('CustomerOrderDetail', {
                         orderID: JSON.stringify(item.Order_id),

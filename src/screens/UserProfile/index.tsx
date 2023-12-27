@@ -25,6 +25,7 @@ const UserProfile = ({ navigation }) => {
     const [profileInfo, setProfileInfo] = useState({});
     const [userAvatar, setUserAvatar] = useState('');
     const [userName, setUserName] = useState('');
+    const [role, setRole] = useState('');
 
     useEffect(() => {
         const setEnabled = async () => {
@@ -44,9 +45,11 @@ const UserProfile = ({ navigation }) => {
         const getUserInfo = async () => {
             const name = await AsyncStorage.getItem('userName');
             const avatar = await AsyncStorage.getItem('userAvatar');
+            const role = await AsyncStorage.getItem('role');
 
             setUserName(name);
             setUserAvatar(avatar);
+            setRole(role);
         };
 
         getUserInfo();
@@ -72,7 +75,11 @@ const UserProfile = ({ navigation }) => {
                         <Text style={styles.text}>Đang theo dõi: 4</Text>
                     </View>
                 </View>
-                <TouchableOpacity className="ml-10 justify-center">
+                <TouchableOpacity
+                    className="ml-10 justify-center"
+                    onPress={() => {
+                        navigation.navigate('UpdateUser');
+                    }}>
                     <PencilSquareIcon size={30} color="black" />
                 </TouchableOpacity>
             </View>
@@ -106,22 +113,34 @@ const UserProfile = ({ navigation }) => {
                         <Text className="text-white">Favourites</Text>
                     </TouchableOpacity>
                 </View>
-                <View className="flex">
-                    <VictoryChart domainPadding={25}>
-                        <VictoryBar
-                            categories={{
-                                x: ['birds', 'cats', 'dogs', 'fish', 'frogs'],
-                            }}
-                            data={[
-                                { x: 'cats', y: 1 },
-                                { x: 'dogs', y: 2 },
-                                { x: 'birds', y: 3 },
-                                { x: 'fish', y: 2 },
-                                { x: 'frogs', y: 1 },
-                            ]}
-                        />
-                    </VictoryChart>
-                </View>
+                {role === 'Manager' && (
+                    <View className="flex">
+                        <VictoryChart domainPadding={25}>
+                            <VictoryBar
+                                categories={{
+                                    x: [
+                                        '23/12',
+                                        '24/12',
+                                        '25/12',
+                                        '26/12',
+                                        '27/12',
+                                    ],
+                                }}
+                                data={[
+                                    { x: 1, y: 100 },
+                                    { x: 2, y: 120 },
+                                    { x: 3, y: 110 },
+                                    { x: 4, y: 102 },
+                                    { x: 5, y: 140 },
+                                ]}
+                            />
+                        </VictoryChart>
+                        <Text className="text-black items-center justify-center text-center">
+                            Revenue in last 5 days
+                        </Text>
+                    </View>
+                )}
+
                 <View className="mt-10 items-center">
                     <TouchableOpacity
                         className="border-2 border-red-600 rounded-lg w-1/2 items-center flex-row justify-center"

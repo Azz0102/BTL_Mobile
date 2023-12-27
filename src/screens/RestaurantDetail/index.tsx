@@ -13,13 +13,6 @@ import { styles } from './style';
 import { ClockIcon, MapPinIcon } from 'react-native-heroicons/outline';
 import { AirbnbRating } from '@rneui/themed';
 
-const DATA = {
-    time: '10 am - 11pm',
-    location: '144 Xuân Thủy',
-    description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at felis at quam gravida commodo nec sit amet urna. Ut in vehicula massa. Fusce a pretium risus, ut bibendum enim. ',
-};
-
 const RestaurantDetail = ({ navigation, route }: { navigation: any }) => {
     const { item } = route.params;
     console.log(item);

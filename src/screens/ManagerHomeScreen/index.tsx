@@ -25,6 +25,7 @@ const ManagerHomeScreen = ({ navigation, id }) => {
     const [InfoRestaurant, setInfoRestaurant] = useState({});
     const [userAvatar, setUserAvatar] = useState('');
     const [userName, setUserName] = useState('');
+    const [employeeNumber, setEmployeeNumber] = useState(0);
 
     useEffect(() => {
         const getResInfo = async () => {
@@ -55,6 +56,28 @@ const ManagerHomeScreen = ({ navigation, id }) => {
         };
 
         getUserInfo();
+        const getEmployee = async () => {
+            try {
+                const resID = await AsyncStorage.getItem('resId');
+                const token = await AsyncStorage.getItem('profile_token');
+                const res = await instance.get(
+                    `/Restaurants/GetEmployee?Restaurant_id=${resID}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    },
+                );
+                console.log(res.data);
+                res.data.map(data => {
+                    setEmployeeNumber(current => current + 1);
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getEmployee();
     }, []);
 
     return (
@@ -104,7 +127,7 @@ const ManagerHomeScreen = ({ navigation, id }) => {
                                     <UserGroupIcon size={26} color="black" />
                                 </View>
                                 <Text className="py-4 px-2 text-xl">
-                                    20 Employees
+                                    {employeeNumber} Employees
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row my-2 rounded-lg items-center">

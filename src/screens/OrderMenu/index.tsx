@@ -105,6 +105,7 @@ const OrderMenu = ({ navigation, route }) => {
                             price={item.Food_Price}
                             avatar={item.food_Avatar}
                             id={item.Food_id}
+                            des={item.DescribeFood}
                             setTotal={setTotal}
                             setFoodAndDrink={setFoodAndDrink}
                             type="food"
@@ -127,6 +128,7 @@ const OrderMenu = ({ navigation, route }) => {
                             navigation={navigation}
                             avatar={item.Avatar}
                             id={item.Drink_id}
+                            des={item.Drink_Description}
                             setTotal={setTotal}
                             setFoodAndDrink={setFoodAndDrink}
                             type="drink"

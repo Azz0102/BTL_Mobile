@@ -52,6 +52,7 @@ const CustomerOrderDetail = ({ navigation, route }) => {
                     Order_status: 1,
                 });
                 console.log(res);
+                navigation.goBack();
             } catch (error) {
                 console.log(error);
             }
@@ -63,6 +64,7 @@ const CustomerOrderDetail = ({ navigation, route }) => {
                 });
 
                 console.log(res);
+                navigation.goBack();
             } catch (error) {
                 console.log(error);
             }
@@ -107,15 +109,6 @@ const CustomerOrderDetail = ({ navigation, route }) => {
                 console.log(res.data[0]);
                 setTableNumber(res.data[0].Table_Number);
                 setOrderInfo(res.data);
-
-                try {
-                    const data = await instance.get(
-                        `/Users/GetSpecificProfile?profileID=${res.data[0].Waitress_id}`,
-                    );
-                    setServantInfo(data.data[0].CodeName);
-                } catch (error) {
-                    console.error(error);
-                }
 
                 try {
                     const data = await instance.get(
@@ -221,20 +214,52 @@ const CustomerOrderDetail = ({ navigation, route }) => {
                                     {orderInfo[0].NumberOfCustomers} people
                                 </Text>
                             </View>
-                            <View className="m-2 flex-row items-center">
-                                <UserGroupIcon size={26} color="black" />
-                                <Text className="ml-2 text-black text-base">
-                                    {orderInfo[0].NumberOfCustomers} people
-                                </Text>
-                            </View>
                             {role === 'Manager' && (
                                 <View className="m-2 flex-row items-center">
                                     <Text className="text-black text-base">
                                         Servant ID:{' '}
                                     </Text>
-                                    <Text className="ml-2 text-black text-base">
-                                        {servantInfo}
+                                    {orderInfo[0].Waitress_id && (
+                                        <TouchableOpacity
+                                            className="flex-row items-center w-50 rounded-3xl bg-blue-500 mx-2 my-2 px-2 py-1 justify-center  text-center"
+                                            onPress={() => {
+                                                navigation.navigate(
+                                                    'UserInfo',
+                                                    {
+                                                        id: orderInfo[0]
+                                                            .Waitress_id,
+                                                    },
+                                                );
+                                            }}>
+                                            <Text className="mx-2 text-black text-base  text-center">
+                                                {orderInfo[0].Waitress_id}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )}
+                                </View>
+                            )}
+                            {role === 'Manager' && (
+                                <View className="m-2 flex-row items-center">
+                                    <Text className="text-black text-base">
+                                        Customer ID:{' '}
                                     </Text>
+                                    {orderInfo[0].Customer_id && (
+                                        <TouchableOpacity
+                                            className="flex-row items-center w-50 rounded-3xl bg-blue-500 mx-2 my-2 px-2 py-1 justify-center text-center"
+                                            onPress={() => {
+                                                navigation.navigate(
+                                                    'UserInfo',
+                                                    {
+                                                        id: orderInfo[0]
+                                                            .Customer_id,
+                                                    },
+                                                );
+                                            }}>
+                                            <Text className="mx-2 text-black text-base text-center">
+                                                {orderInfo[0].Customer_id}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )}
                                 </View>
                             )}
 

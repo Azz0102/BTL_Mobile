@@ -8,6 +8,7 @@ import OrderMenu from '../OrderMenu';
 import OrderMenuItemDetail from '../OrderMenuItemDetail';
 import ServantHomeScreen from '../ServantHomeScreen';
 import CustomerOrderDetail from '../CustomerOrderDetail';
+import UserInfo from '../UserInfo';
 
 const ServantHomeTab = () => {
     const Stack = createNativeStackNavigator();
@@ -54,6 +55,15 @@ const ServantHomeTab = () => {
                     }}
                     name="OrderMenuItemDetail"
                     component={OrderMenuItemDetail}
+                />
+                <Stack.Screen
+                    options={{
+                        header: ({ navigation, route }) => (
+                            <Header share={true} navigation={navigation} />
+                        ),
+                    }}
+                    name="UserInfo"
+                    component={UserInfo}
                 />
             </Stack.Navigator>
         </>

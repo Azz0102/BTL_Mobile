@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, Switch, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Switch, Text, View } from 'react-native';
 import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
 import ServantOrderItem from '../ServantOrderItem';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,82 +12,20 @@ import {
 import instance from '../../services/instance';
 const filterOrderOption = ['All', 'My Serve'];
 
-const filterfoodData = [
-    {
-        id: 1,
-        foodName: 'Poha',
-        available: true,
-        foodImageUrl:
-            'https://res.cloudinary.com/dfsucyg30/image/upload/v1690964445/nxuiyqocgn0av3w7uszi.png',
-        foodPrice: '25$',
-        time: '2s',
-    },
-    {
-        id: 2,
-        foodName: 'Samosa',
-        available: true,
-        foodImageUrl:
-            'https://res.cloudinary.com/dfsucyg30/image/upload/v1690964504/vanzrpqb0nwrmtxa9mau.png',
-        foodPrice: '50$',
-        time: '5s',
-    },
-    {
-        id: 3,
-        foodName: 'Egg Rice',
-        available: true,
-        foodImageUrl:
-            'https://res.cloudinary.com/dfsucyg30/image/upload/v1690968955/dfk4fhclsuf9clv9hpkv.png',
-        foodPrice: '15$',
-        time: '5s',
-    },
-    {
-        id: 4,
-        foodName: 'Hamburger',
-        available: true,
-        foodImageUrl:
-            'https://res.cloudinary.com/dfsucyg30/image/upload/v1690968994/hwq1jyyg0omlilmgppip.png',
-        foodPrice: '30$',
-        time: '5s',
-    },
-    {
-        id: 5,
-        foodName: 'Pizza',
-        available: true,
-        foodImageUrl:
-            'https://res.cloudinary.com/dfsucyg30/image/upload/v1690969066/yg4xrarfclursjdwe3bg.png',
-        foodPrice: '25$',
-        time: '5s',
-    },
-    {
-        id: 6,
-        foodName: 'Pizza',
-        available: true,
-        foodImageUrl:
-            'https://res.cloudinary.com/dfsucyg30/image/upload/v1690969066/yg4xrarfclursjdwe3bg.png',
-        foodPrice: '25$',
-        time: '5s',
-    },
-    {
-        id: 7,
-        foodName: 'Pizza',
-        available: true,
-        foodImageUrl:
-            'https://res.cloudinary.com/dfsucyg30/image/upload/v1690969066/yg4xrarfclursjdwe3bg.png',
-        foodPrice: '25$',
-        time: '5s',
-    },
-];
-
 const ServantWorkTab = ({ navigation }) => {
     const [filter, setFilter] = useState('All');
     const [isLoading, setIsLoading] = useState(true);
     const [orderList, setOrderList] = useState([]);
     const [isEnabled, setIsEnabled] = useState(false);
     const [resId, setResId] = useState(null);
+    const [profileID, setProfileID] = useState('');
 
     const toggleSwitch = async () => {
         try {
             const token = await AsyncStorage.getItem('profile_token');
+            const id = await AsyncStorage.getItem('profileID');
+            setProfileID(id);
+
             const res = await instance.patch(
                 '/Users/updateProfile',
                 {
@@ -173,18 +111,39 @@ const ServantWorkTab = ({ navigation }) => {
                     />
                 </View>
             </View>
-            {orderList && isEnabled && !isLoading && (
+            {orderList && isEnabled && !isLoading && filter === 'All' && (
                 <Animated.ScrollView
                     entering={FadeInDown}
                     exiting={FadeOutUp}
                     showsVerticalScrollIndicator={false}>
                     {orderList.map(foodItem => {
-                        return (
-                            <ServantOrderItem
-                                navigation={navigation}
-                                item={foodItem}
-                            />
-                        );
+                        if (!foodItem.Order_status) {
+                            return (
+                                <ServantOrderItem
+                                    navigation={navigation}
+                                    item={foodItem}
+                                />
+                            );
+                        }
+                    })}
+                </Animated.ScrollView>
+            )}
+            {filter !== 'All' && (
+                <Animated.ScrollView
+                    entering={FadeInDown}
+                    exiting={FadeOutUp}
+                    showsVerticalScrollIndicator={false}>
+                    {orderList.map(foodItem => {
+                        if (foodItem.Waitress_id === profileID) {
+                            if (!foodItem.Order_status) {
+                                return (
+                                    <ServantOrderItem
+                                        navigation={navigation}
+                                        item={foodItem}
+                                    />
+                                );
+                            }
+                        }
                     })}
                 </Animated.ScrollView>
             )}

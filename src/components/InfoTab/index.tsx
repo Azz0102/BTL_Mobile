@@ -16,26 +16,7 @@ import DocumentPicker from 'react-native-document-picker';
 import { styles } from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import instance from '../../services/instance';
-
-const DATA = {
-    email: 'nguyenduchuyhht2@gmail.com',
-    name: 'UET',
-    phoneNumber: '9992222999',
-    time: '10 am - 11pm',
-    location: '144 Xuân Thủy',
-    table: 20,
-};
-
-const loginValidationSchema = yup.object().shape({
-    email: yup
-        .string()
-        .email('Please enter valid email')
-        .required('Email Address is Required'),
-    password: yup
-        .string()
-        .min(8, ({ min }) => `Password must be at least ${min} characters`)
-        .required('Password is required'),
-});
+import { showMessage } from 'react-native-flash-message';
 
 const InfoTab = ({ navigation }) => {
     const [isEdit, setIsEdit] = useState(false);
@@ -62,27 +43,42 @@ const InfoTab = ({ navigation }) => {
 
     const handleSubmit = async (values: any, setSubmitting: any) => {
         try {
+            const resID = await AsyncStorage.getItem('resId');
             const fileToUpload = singleFile;
             const data = new FormData();
+            data.append('RestaurantID', resID);
             data.append('Name', values.name);
             data.append('PhoneNumber', values.phonenumber);
             data.append('Time', values.time);
             data.append('Address', values.location);
             data.append('Description', values.description);
             data.append('Number_of_tables', values.numoftable);
-            data.append('Avatar', fileToUpload);
+            data.append('AvatarPicture', {
+                uri: fileToUpload[0].uri,
+                name: fileToUpload[0].name,
+                type: fileToUpload[0].type,
+            });
             const token = await AsyncStorage.getItem('profile_token');
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
+                    Accept: 'application/json',
                 },
             };
-            const res = await instance.put(
-                'Restaurants/UpdateRestaurant',
+            const res = await instance.patch(
+                '/Restaurants/UpdateRestaurant',
                 data,
                 config,
             );
+            console.log(res);
+            if (res.status === 200) {
+                showMessage({
+                    message: 'Success',
+                    description: 'Updated restaurant!',
+                    type: 'success',
+                });
+            }
             setSubmitting(false);
         } catch (error) {
             console.log(error);
@@ -139,8 +135,8 @@ const InfoTab = ({ navigation }) => {
                         <TouchableOpacity
                             className="flex flex-row items-center justify-center absolute bottom-1 m-2 border-2 border-gray-100 p-2 rounded-lg"
                             onPress={selectFile}>
-                            <CameraIcon size={26} color="white" />
-                            <Text className="text-white ml-1">Edit Image</Text>
+                            <CameraIcon size={26} color="black" />
+                            <Text className="text-black ml-1">Edit Image</Text>
                         </TouchableOpacity>
                     )}
                 </ImageBackground>

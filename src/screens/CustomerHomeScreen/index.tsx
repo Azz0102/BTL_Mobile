@@ -14,10 +14,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import RestaurantCard from '../../components/RestaurantCard';
 import { showMessage } from 'react-native-flash-message';
 import instance from '../../services/instance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CustomerHomeScreen = ({ navigation }) => {
     const [restaurantList, setRestaurantList] = useState([]);
-    const [filter, setfilter] = useState('none');
+    const [filter, setfilter] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [userAvatar, setUserAvatar] = useState('');
     const [userName, setUserName] = useState('');
@@ -130,16 +131,33 @@ const CustomerHomeScreen = ({ navigation }) => {
                             flexDirection: 'row',
                         }}
                         showsVerticalScrollIndicator={false}>
-                        {restaurantList.map(foodItem => (
-                            <RestaurantCard
-                                key={foodItem.ID}
-                                title={foodItem.Name}
-                                uri={foodItem.Avatar}
-                                time={foodItem.Time}
-                                navigation={navigation}
-                                item={foodItem}
-                            />
-                        ))}
+                        {restaurantList.map(foodItem => {
+                            if (filter === '') {
+                                return (
+                                    <RestaurantCard
+                                        key={foodItem.ID}
+                                        title={foodItem.Name}
+                                        uri={foodItem.Avatar}
+                                        time={foodItem.Time}
+                                        navigation={navigation}
+                                        item={foodItem}
+                                    />
+                                );
+                            } else {
+                                if (foodItem.Name.includes(filter)) {
+                                    return (
+                                        <RestaurantCard
+                                            key={foodItem.ID}
+                                            title={foodItem.Name}
+                                            uri={foodItem.Avatar}
+                                            time={foodItem.Time}
+                                            navigation={navigation}
+                                            item={foodItem}
+                                        />
+                                    );
+                                }
+                            }
+                        })}
                     </ScrollView>
                 )}
             </ScrollView>

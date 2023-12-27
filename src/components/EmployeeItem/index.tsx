@@ -35,7 +35,9 @@ const EmPloyeeItem = ({ title, navigation, role, id, setList }) => {
             style={styles.item}
             className="flex-row items-center rounded-lg bg-orange-500 justify-between"
             onPress={() => {
-                // navigation.navigate('EmployeeDetail');
+                navigation.navigate('UserInfo', {
+                    id,
+                });
             }}>
             <View className="flex-row items-center ">
                 <UserCircleIcon size={36} color="black" />

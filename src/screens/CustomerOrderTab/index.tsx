@@ -10,6 +10,7 @@ import OrderMenuItemDetail from '../OrderMenuItemDetail';
 import CustomerOrderTabScreen from '../CustomerOrderTabScreen';
 import CustomerOrderDetail from '../CustomerOrderDetail';
 import CustomerPayment from '../CustomerPayment';
+import UserInfo from '../UserInfo';
 
 const CustomerOrderTab = () => {
     const Stack = createNativeStackNavigator();
@@ -38,6 +39,15 @@ const CustomerOrderTab = () => {
                     }}
                     name="CustomerPayment"
                     component={CustomerPayment}
+                />
+                <Stack.Screen
+                    options={{
+                        header: ({ navigation, route }) => (
+                            <Header share={true} navigation={navigation} />
+                        ),
+                    }}
+                    name="UserInfo"
+                    component={UserInfo}
                 />
             </Stack.Navigator>
         </>

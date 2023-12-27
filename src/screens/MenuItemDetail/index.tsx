@@ -16,17 +16,7 @@ import { styles } from './style';
 import { CameraIcon, PencilSquareIcon } from 'react-native-heroicons/solid';
 import DocumentPicker from 'react-native-document-picker';
 import instance from '../../services/instance';
-
-const loginValidationSchema = yup.object().shape({
-    email: yup
-        .string()
-        .email('Please enter valid email')
-        .required('Email Address is Required'),
-    password: yup
-        .string()
-        .min(8, ({ min }) => `Password must be at least ${min} characters`)
-        .required('Password is required'),
-});
+import { showMessage } from 'react-native-flash-message';
 
 const MenuItemDetail = ({ route, navigation }) => {
     const { title, description, avatar, price, id, type } = route.params;
@@ -42,19 +32,30 @@ const MenuItemDetail = ({ route, navigation }) => {
                 data.append('Name', values.name);
                 data.append('DescribeFood', values.description);
                 data.append('FoodPrice', values.price);
-                data.append('Avatar', fileToUpload);
+                data.append('AvatarPicture', {
+                    uri: fileToUpload[0].uri,
+                    name: fileToUpload[0].name,
+                    type: fileToUpload[0].type,
+                });
 
                 const config = {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
                 };
-                const res = await instance.put(
-                    'Restaurants/UpdateRestaurant',
+                const res = await instance.patch(
+                    '/Food/UpdateFood',
                     data,
                     config,
                 );
                 console.log(res);
+                if (res.status === 200) {
+                    showMessage({
+                        message: 'Success',
+                        description: 'Updated item!',
+                        type: 'success',
+                    });
+                }
                 setSubmitting(false);
             } catch (error) {
                 console.log(error);
@@ -64,23 +65,34 @@ const MenuItemDetail = ({ route, navigation }) => {
             try {
                 const fileToUpload = singleFile;
                 const data = new FormData();
-                data.append('FoodID', JSON.stringify(id));
-                data.append('Name', values.name);
-                data.append('DescribeFood', values.description);
-                data.append('FoodPrice', values.price);
-                data.append('Avatar', fileToUpload);
+                data.append('DrinkID', JSON.stringify(id));
+                data.append('DrinkName', values.name);
+                data.append('DrinksPrice', values.description);
+                data.append('Drink_Description', values.price);
+                data.append('AvatarPicture', {
+                    uri: fileToUpload[0].uri,
+                    name: fileToUpload[0].name,
+                    type: fileToUpload[0].type,
+                });
 
                 const config = {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
                 };
-                const res = await instance.put(
-                    'Restaurants/UpdateRestaurant',
+                const res = await instance.patch(
+                    '/Drinks/UpdateDrink',
                     data,
                     config,
                 );
                 console.log(res);
+                if (res.status === 200) {
+                    showMessage({
+                        message: 'Success',
+                        description: 'Updated item!',
+                        type: 'success',
+                    });
+                }
                 setSubmitting(false);
             } catch (error) {
                 console.log(error);

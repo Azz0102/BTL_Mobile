@@ -79,17 +79,6 @@ const ChefHomeScreen = ({ navigation }) => {
                                 </Text>
                             </View>
                             <View className="w-full grow flex items-center justify-center">
-                                <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row mb-2 rounded-lg items-center">
-                                    <View className="pl-4">
-                                        <UserGroupIcon
-                                            size={26}
-                                            color="black"
-                                        />
-                                    </View>
-                                    <Text className="py-4 px-2 text-xl">
-                                        20 Employees
-                                    </Text>
-                                </TouchableOpacity>
                                 <TouchableOpacity className="bg-red-500 w-11/12 flex flex-row my-2 rounded-lg items-center">
                                     <View className="pl-4">
                                         <ClockIcon size={26} color="black" />

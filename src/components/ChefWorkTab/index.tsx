@@ -84,7 +84,7 @@ const ChefWorkTab = ({ navigation }) => {
         <View className="flex-1 bg-orange-300">
             <View className="flex-row justify-between items-center my-2 ml-2">
                 <SearchBar
-                    placeholder="Type Here..."
+                    placeholder="Search order ID"
                     onChangeText={updateSearch}
                     value={search}
                     containerStyle={styles.searchBar}
@@ -107,18 +107,39 @@ const ChefWorkTab = ({ navigation }) => {
                     />
                 </View>
             </View>
-            {orderList && isEnabled && !isLoading && (
+            {orderList && isEnabled && !isLoading && !search && (
                 <Animated.ScrollView
                     entering={FadeInDown}
                     exiting={FadeOutUp}
                     showsVerticalScrollIndicator={false}>
                     {orderList.map(foodItem => {
-                        return (
-                            <OrderItem
-                                navigation={navigation}
-                                item={foodItem}
-                            />
-                        );
+                        if (!foodItem.Order_status) {
+                            return (
+                                <OrderItem
+                                    navigation={navigation}
+                                    item={foodItem}
+                                />
+                            );
+                        }
+                    })}
+                </Animated.ScrollView>
+            )}
+            {search && (
+                <Animated.ScrollView
+                    entering={FadeInDown}
+                    exiting={FadeOutUp}
+                    showsVerticalScrollIndicator={false}>
+                    {orderList.map(foodItem => {
+                        if (foodItem.Order_id + '' === search) {
+                            if (!foodItem.Order_status) {
+                                return (
+                                    <OrderItem
+                                        navigation={navigation}
+                                        item={foodItem}
+                                    />
+                                );
+                            }
+                        }
                     })}
                 </Animated.ScrollView>
             )}

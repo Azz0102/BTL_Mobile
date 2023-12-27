@@ -8,6 +8,7 @@ import EmployeeDetail from '../EmployeeDetail';
 import MenuItemDetail from '../MenuItemDetail';
 import AddMenuItemScreen from '../AddMenuItemScreen';
 import CustomerOrderDetail from '../CustomerOrderDetail';
+import UserInfo from '../UserInfo';
 
 const ManagerStoreTab = () => {
     const Stack = createNativeStackNavigator();
@@ -72,6 +73,15 @@ const ManagerStoreTab = () => {
                     }}
                     name="CustomerOrderDetail"
                     component={CustomerOrderDetail}
+                />
+                <Stack.Screen
+                    options={{
+                        header: ({ navigation, route }) => (
+                            <Header share={true} navigation={navigation} />
+                        ),
+                    }}
+                    name="UserInfo"
+                    component={UserInfo}
                 />
             </Stack.Navigator>
         </>
