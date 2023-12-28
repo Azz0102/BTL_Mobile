@@ -3,19 +3,8 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Field, Formik } from 'formik';
 import * as yup from 'yup';
 import CustomInput from '../../components/CustomInput';
-import { AsyncStorage } from 'react-native';
 import instance from '../../services/instance';
-
-const loginValidationSchema = yup.object().shape({
-    email: yup
-        .string()
-        .email('Please enter valid email')
-        .required('Email Address is Required'),
-    password: yup
-        .string()
-        .min(8, ({ min }) => `Password must be at least ${min} characters`)
-        .required('Password is required'),
-});
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddEmployee = ({ navigation }: { navigation: any }) => {
     const handleAddEmployee = async (values: any, setSubmitting: any) => {
@@ -65,7 +54,6 @@ const AddEmployee = ({ navigation }: { navigation: any }) => {
                 Add Employee
             </Text>
             <Formik
-                validationSchema={loginValidationSchema}
                 initialValues={{ id: '' }}
                 onSubmit={(values, { setSubmitting }) => {
                     handleAddEmployee(values, setSubmitting);

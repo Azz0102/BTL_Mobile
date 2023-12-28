@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Image, Text, TouchableOpacity, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Image,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import {
@@ -16,6 +22,7 @@ import ServantWorkTab from '../../components/ServantWorkTab';
 import instance from '../../services/instance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './style';
+import IdToAdd from '../../components/IdToAdd';
 
 const ServantHomeScreen = ({ navigation }) => {
     const [InfoRestaurant, setInfoRestaurant] = useState({});
@@ -139,49 +146,53 @@ const ServantHomeScreen = ({ navigation }) => {
                         />
                     </View>
                 </View>
-                <View className="flex flex-1 mt-2">
-                    <View className="flex flex-row">
-                        <TouchableOpacity
-                            className="flex overflow-hidden w-1/2 items-center"
-                            onPress={() => {
-                                setIsSelectedTab(0);
-                            }}>
-                            <View className="flex flex-row items-center justify-center">
-                                <InformationCircleIcon
-                                    size="26"
-                                    color="black"
+                {InfoRestaurant ? (
+                    <View className="flex flex-1 mt-2">
+                        <View className="flex flex-row">
+                            <TouchableOpacity
+                                className="flex overflow-hidden w-1/2 items-center"
+                                onPress={() => {
+                                    setIsSelectedTab(0);
+                                }}>
+                                <View className="flex flex-row items-center justify-center">
+                                    <InformationCircleIcon
+                                        size="26"
+                                        color="black"
+                                    />
+                                    <Text className="text-black mx-2 mb-1 text-lg">
+                                        Restaurant Info
+                                    </Text>
+                                </View>
+                                <BottomSlider
+                                    isSelected={isSelectedTab}
+                                    index={0}
                                 />
-                                <Text className="text-black mx-2 mb-1 text-lg">
-                                    Restaurant Info
-                                </Text>
-                            </View>
-                            <BottomSlider
-                                isSelected={isSelectedTab}
-                                index={0}
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            className="flex overflow-hidden w-1/2 items-center"
-                            onPress={() => {
-                                setIsSelectedTab(1);
-                            }}>
-                            <View className="flex flex-row items-center justify-center">
-                                <BuildingStorefrontIcon
-                                    size="26"
-                                    color="black"
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                className="flex overflow-hidden w-1/2 items-center"
+                                onPress={() => {
+                                    setIsSelectedTab(1);
+                                }}>
+                                <View className="flex flex-row items-center justify-center">
+                                    <BuildingStorefrontIcon
+                                        size="26"
+                                        color="black"
+                                    />
+                                    <Text className="text-black mx-2 mb-1 text-lg">
+                                        Work
+                                    </Text>
+                                </View>
+                                <BottomSlider
+                                    isSelected={isSelectedTab}
+                                    index={1}
                                 />
-                                <Text className="text-black mx-2 mb-1 text-lg">
-                                    Work
-                                </Text>
-                            </View>
-                            <BottomSlider
-                                isSelected={isSelectedTab}
-                                index={1}
-                            />
-                        </TouchableOpacity>
+                            </TouchableOpacity>
+                        </View>
+                        {handleSelectedTab()}
                     </View>
-                    {handleSelectedTab()}
-                </View>
+                ) : (
+                    <IdToAdd />
+                )}
             </View>
         </SafeAreaView>
     );

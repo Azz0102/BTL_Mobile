@@ -85,7 +85,7 @@ const ServantOrderItem = ({ item, navigation }) => {
                         } else {
                             try {
                                 const result = await instance.get(
-                                    `/Drinks/GetDrink?Drink_id=${item.Drink_id}`,
+                                    `/Drinks/GetDrink?Drink_id=${item.DrinkID}`,
                                 );
                                 setTotal(current => {
                                     const sum =

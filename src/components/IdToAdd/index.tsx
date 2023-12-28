@@ -1,4 +1,5 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -13,11 +14,17 @@ import {
 } from 'react-native-safe-area-context';
 // import { styles } from './style';
 
-const id = 'dad1122';
-
 const IdToAdd = () => {
     const insets = useSafeAreaInsets();
+    const [id, setId] = useState('');
 
+    useEffect(() => {
+        const getID = async () => {
+            const id = await AsyncStorage.getItem('codename');
+            setId(id);
+        };
+        getID();
+    });
     return (
         <View className="flex bg-orange-200 justify-center items-center w-full h-full">
             <StatusBar backgroundColor="rgb(254 215 170)" />
