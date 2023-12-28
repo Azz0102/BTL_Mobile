@@ -66,9 +66,11 @@ const OrderItem = ({ item, navigation }) => {
                             }
                         } else {
                             try {
+                                console.log('item: ', item);
                                 const result = await instance.get(
-                                    `/Drinks/GetDrink?Drink_id=${item.Drink_id}`,
+                                    `/Drinks/GetDrink?Drink_id=${item.DrinkID}`,
                                 );
+                                console.log(result.data);
                                 setTotal(current => {
                                     const sum =
                                         current +

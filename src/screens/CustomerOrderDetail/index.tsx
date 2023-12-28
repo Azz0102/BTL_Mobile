@@ -333,8 +333,48 @@ const CustomerOrderDetail = ({ navigation, route }) => {
                                     </View>
                                 </View>
                             ))}
-                            {listDrinks.map(foodItem => (
-                                <OrderDetailListItem navigation={navigation} />
+                            {listDrinks.map(data => (
+                                <View className="flex-row w-full items-center my-1 justify-between">
+                                    <View className="flex-row items-center ml-1">
+                                        <Image
+                                            source={{ uri: data.Avatar }}
+                                            style={styles.image}
+                                        />
+                                        <Text className="text-black ml-2">
+                                            {data.Drink_name}
+                                        </Text>
+                                    </View>
+                                    <View className="flex-row mr-1">
+                                        {orderInfo.map(item => {
+                                            if (item.DrinkID === data.Drink_id) {
+                                                console.log(data.Name);
+                                                return (
+                                                    <Text className="text-black mr-2 text-base ">
+                                                        x {item.Quantity}
+                                                    </Text>
+                                                );
+                                            }
+                                        })}
+                                        {orderInfo[0].Order_status !== 0 ? (
+                                            <View className="bg-green-600 rounded-full p-1 items-center flex-row w-23 justify-center self-end">
+                                                <CheckIcon
+                                                    color="white"
+                                                    size={20}
+                                                />
+                                                <Text className="text-white text-xs ml-1">
+                                                    Complete
+                                                </Text>
+                                            </View>
+                                        ) : (
+                                            <View className="bg-red-600 rounded-full p-1 items-center flex-row w-20 justify-center self-end">
+                                                <ActivityIndicator color="white" />
+                                                <Text className="text-white text-xs ml-1">
+                                                    Waiting
+                                                </Text>
+                                            </View>
+                                        )}
+                                    </View>
+                                </View>
                             ))}
                         </View>
                         <View className="w-full p-2 flex-row items-center justify-between">
